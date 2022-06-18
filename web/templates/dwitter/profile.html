@@ -1,0 +1,144 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="column">
+
+    <div class="block">
+    <h1 class="title is-1">
+        {{profile.user.username|upper}}'s Dweets
+    </h1>
+    </div>
+    <div class="block">
+    <form method="post">
+        {% csrf_token %}
+        <div class="buttons has-addons">
+            {% if profile in user.profile.follows.all %}
+            <button class="button is-success is-static">Follow</button>
+            <button class="button is-danger" name="follow" value="unfollow">Unfollow</button>
+            {% else %}
+            <button class="button is-success" name="follow" value="follow">Follow</button>
+            <button class="button is-danger is-static">Unfollow</button>
+            {% endif %}
+        </div>
+    </form>
+    </div>
+    
+    <div class="content">
+        {% for dweet in profile.user.dweets.all %}
+            <div class="box">
+                {{ dweet.body }}
+                <span class="is-small has-text-grey-light">
+                    ({{ dweet.created_at }})
+                </span>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+<div class="column is-one-third">
+
+    <div class="block">
+        <a href="{% url 'profile_list' %}">
+            <button class="button is-dark is-outlined is-fullwidth">
+                All Profiles
+            </button>
+        </a>
+    </div>
+
+    <div class="block">
+        
+         
+
+        <div class="block">
+            <div class="card">
+              <a href="{% url "profile" profile.id %}">
+                <div class="card-content">
+                  <div class="media">
+                    <div class="media-left">
+                      <figure class="image is-48x48">
+                        <img src="{{profile.profile_image}}"
+                             alt="Placeholder image">
+                      </figure>
+                    </div>
+                    <div class="media-content">
+                      <p class="title is-4">
+                        {{ profile.user.username }}
+                      </p>
+                      <p class="subtitle is-6">
+                        @{{ profile.user.username|lower }}
+                        
+                      </p>
+                      
+                      <p class="subtitle is-3">
+                        <div class="buttons has-addons">
+                            
+                            <button class="button is-ghost is-normal" style="text-decoration:none">Followers: {{profile.followed_by.all|length}}</button>
+                            <button class="button is-ghost is-normal" style="text-decoration:none">Following: {{profile.follows.all|length}}</button>
+                
+                            
+                        </div>
+
+                        <div class="content">
+                            <p class="title is-4">Bio</p>
+                            
+                                <div class="box">
+                                    {{profile.bio}}
+                                    <span class="is-small has-text-grey-light">
+                                       
+                                    </span>
+                                </div>
+                            
+                            
+                        </div> 
+                       
+                        
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </div>
+          </div>
+
+
+
+        <h3 class="title is-4">
+            {{profile.user.username}} follows:
+        </h3>
+        <div class="content">
+            <ul>
+            {% for following in profile.follows.all %}
+                <li>
+                    <a href="{% url 'profile' following.id%}">
+                        {{ following }}
+                    </a>
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <div class="block">
+        
+        <h3 class="title is-4">
+            {{profile.user.username}} is followed by:
+        </h3>
+        <div class="content">
+            
+            <ul>
+            {% for follower in profile.followed_by.all %}
+                <li>
+                    <a href="{% url 'profile' follower.id %}">
+                        {{ follower }}
+                    </a>
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+</div>
+
+{% endblock content %}
