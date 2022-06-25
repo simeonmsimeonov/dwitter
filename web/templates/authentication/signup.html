@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container h-100">
+    		<div class="row h-100">
+				<div class="col-sm-10 col-md-8 col-lg-6 mx-auto d-table h-100">
+					<div class="d-table-cell align-middle">
+
+						<div class="text-center mt-4">
+							<h1 class="h2">Get started</h1>
+							<p class="lead">
+								Sign up and create your account.
+							</p>
+						</div>
+
+						<div class="card">
+							<div class="card-body">
+								<div class="m-sm-4">
+									<form method="POST">
+										
+										{% csrf_token %}
+            
+										{{ form|crispy }}
+										
+									
+										  <div class="row">
+											<div class="col-12">
+											  <input type="submit" value="Sign Up"  class="btn btn-primary">
+											  <a href="{% url 'login' %}">Already a member? Login.</a>
+											</div>
+										  </div>
+									</form>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+<style type="text/css">
+body{
+
+    background-color: #f2f3f8;
+}
+.card {
+    margin-bottom: 1.5rem;
+    box-shadow: 0 1px 15px 1px rgba(52,40,104,.08);
+}
+
+.card {
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid #e5e9f2;
+    border-radius: .2rem;
+}
+</style>
+{% endblock %}
+<script type="text/javascript">
+
+</script>
+</body>
+</html>

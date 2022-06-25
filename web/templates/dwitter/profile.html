@@ -1,46 +1,129 @@
 {% extends 'base.html' %}
 
+
+{% block title %}
+    <title>{{profile.user.first_name}} {{profile.user.last_name}} (@{{profile}})</title>
+{% endblock title %}
+
+
+
 {% block content %}
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 
 <div class="column">
 
     <div class="block">
     <h1 class="title is-1">
-        {{profile.user.username|upper}}'s Dweets
+        {{profile.user.username|upper}}'s States
     </h1>
-    </div>
-    <div class="block">
-    <form method="post">
-        {% csrf_token %}
-        <div class="buttons has-addons">
-            {% if profile in user.profile.follows.all %}
-            <button class="button is-success is-static">Follow</button>
-            <button class="button is-danger" name="follow" value="unfollow">Unfollow</button>
-            {% else %}
-            <button class="button is-success" name="follow" value="follow">Follow</button>
-            <button class="button is-danger is-static">Unfollow</button>
-            {% endif %}
-        </div>
-    </form>
+    
     </div>
     
-    <div class="content">
-        {% for dweet in profile.user.dweets.all %}
-            <div class="box">
-                {{ dweet.body }}
-                <span class="is-small has-text-grey-light">
-                    ({{ dweet.created_at }})
-                </span>
-            </div>
-        {% endfor %}
-    </div>
+    
+   
+ 
+        {% if profile.user.dweets %}
+            
+            {% for dweet in page_obj.object_list%}
+
+           
+               <div class="box">
+                <ul class="activity-list list-unstyled;" style="list-style-type: none">
+                    <li class="clearfix">
+                    <div class="float-left">
+                        <a href="{% url 'profile' dweet.user.id %}"><img height="60px" width="60px"src="{{dweet.user.profile_image}}" alt="" class="img-fluid rounded-circle"></a>
+                    </div>
+                    <div class="act-content">
+                        <div class="font400">
+
+                            <a style="text-decoration:none"href="{% url "profile" dweet.user.id %}" class="font600">{{ dweet.user.first_name }} {{dweet.user.last_name }} </a>
+                            {% if dweet.tag %}
+                        is feeling <span class="tag is-warning is-light">{{dweet.tag|upper}}</span>
+                            {% endif %}
+                        </div>
+                        <span class="text-small">{{dweet.created_at}}</span>
+                        <p>
+                            {{dweet.body}}
+                        </p>
+                        
+                        {% if dweet.user.id == request.user.id %}
+                        <a href="{% url 'dweet delete' dweet.id%}" style="text-decoration:none;"><button class="button is-danger is-small">Delete</button></a>
+                        {% endif %}
+                        
+                    </div>
+                   
+                </li>
+            </ul>
+       
+                    {% comment %} <div class="media">
+
+                       <div class="media-left">
+                        <figure class="image is-48x48">
+                            <img class="is-rounded" src="{{dweet.user.profile_image}}"
+                                alt="Placeholder image">
+                        </figure>
+                        </div>
+
+                        <div class="media-content">
+                            <div class="field is-grouped">
+                                <p class="title is-4">
+                                    <a style="text-decoration:none"href="{% url "profile" dweet.user.id %}">{{ dweet.user.first_name }} {{dweet.user.last_name }} </a>
+                                        {% if dweet.tag %}
+                                    is feeling <span class="tag is-warning is-light">{{dweet.tag|upper}}</span>
+                                        {% endif %}
+                                    <span class="is-small has-text-grey-light">
+                                        ({{ dweet.created_at|date:"d/M/Y" }}, {{ dweet.created_at|time:"H:i" }})
+                                    </span>
+                                </p>
+                            </div>
+                        
+        
+                                <p class="subtitle is-6">
+                                    @{{ dweet.user.username|lower }}
+                                    
+                                </p>
+                                
+                                <p>
+                                    {{ dweet.body }}
+                                </p>
+                             
+                             
+                        </div>
+
+                        {% if dweet.user.id == request.user.id %}
+                        <a href="{% url 'dweet delete' dweet.id%}" style="text-decoration:none;"><button class="button is-danger is-small">Delete</button></a>
+                        {% endif %}
+                    </div>  {% endcomment %}
+                </div> 
+            {% endfor %}
+        {% else %}
+            <h1 class="title is-1">
+                You don't have any states. Write some.
+            </h1>
+        {% endif %}
+            {{dweets}}
+        <center style="text-decoration:none">
+            {%if page_obj.has_previous %} {# whether the previous page exists #}
+                
+                <a style="text-decoration:none; color: white; background-color: orange; border-color: orange" href="?page={{page_obj.previous_page_number}}" class="pagination-next">Previous</a> {# link to the prev page #}
+            {% endif %}
+            {# the current page number #}
+            <a style="text-decoration:none; color: orange; background-color: white; border-color: orange" class="pagination-link is-current" aria-label="Page 46" aria-current="page">{{page_obj.number}}</a>
+    
+      
+            {%if page_obj.has_next %} {# whether the next page exists #}
+                
+                <a style="text-decoration:none; color: white; background-color: orange; border-color: orange" href="?page={{page_obj.next_page_number}}" class="pagination-next">Next page</a> {# link to the next page #}
+            {% endif %}
+        </center>
+    
 </div>
 
 
 <div class="column is-one-third">
 
     <div class="block">
-        <a href="{% url 'profile_list' %}">
+        <a href="{% url 'profile_list' %}" style="text-decoration:none">
             <button class="button is-dark is-outlined is-fullwidth">
                 All Profiles
             </button>
@@ -48,23 +131,292 @@
     </div>
 
     <div class="block">
-        
-         
 
-        <div class="block">
+                    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+
             <div class="card">
-              <a href="{% url "profile" profile.id %}">
-                <div class="card-content">
+                <div class="p-4">
+
+                    <div class="d-flex flex-row">
+                        <div class=""><img src="{{profile.user.profile_image}}" alt="user" class="rounded-circle" width="100" /></div>
+                        <div class="pl-4">
+                            <h3>{{profile.user.first_name}} {{profile.user.last_name}}
+
+                            </h3>
+                            
+                            <h4>@{{profile.user.username}}</h4>
+                            {% if profile.user.id == request.user.id %}
+                            <a href="{% url 'profile edit' profile.user.id %}" style="text-decoration: none"><button class="button is-warning"><i class='fa fa-edit'></i><strong>Edit</strong></button></a>
+                            {% endif %}
+                            <div class="block">
+                                {% if request.user.id != profile.user.id %}
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <div class="buttons has-addons">
+                                        {% if profile in user.profile.follows.all %}
+                                        <button class="button is-success is-static">Follow</button>
+                                        <button class="button is-danger" name="follow" value="unfollow">Unfollow</button>
+                                        {% else %}
+                                        <button class="button is-success" name="follow" value="follow">Follow</button>
+                                        <button class="button is-danger is-static">Unfollow</button>
+                                        {% endif %}
+                                    </div>
+                                </form>
+                                {% endif %}
+                                </div> 
+
+                            
+                        </div>
+                    </div>
+                    <div class="row mt-5">
+                        <div class="col border-right text-center">
+                            <h2 class="font-light">{{profile.user.dweets.all|length}}</h2>
+                            {% if profile.user.dweets.all|length > 1 %}
+                                <h4 class="text-uppercase">Posts</h4>
+                            {% else %}
+                                <h4 class="text-uppercase">Post</h4>
+                            {% endif %}
+                        </div>
+                        <div class="col border-right text-center">
+                            <h2 class="font-light">{{profile.followed_by.all|length}}</h2>
+                            {% if profile.followed_by.all|length > 1 %}
+                                <h4 class="text-uppercase">Followers</h4>
+                            {% else %}
+                                <h4 class="text-uppercase">Follower</h4>
+                            {% endif %}
+                        </div>
+                        <div class="col text-center">
+                            <h2 class="font-light">{{profile.follows.all|length}}</h2>
+                            <h4 class="text-uppercase">Following</h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body border-top">
+                    {% if profile.user.bio %}
+                    <p class="text-center aboutscroll">
+
+                        {{profile.user.bio}}
+                    </p>
+                    
+                    <hr />
+                    {% endif %}
+                    <h4 class="font-medium text-center mt-4">Followers</h4>
+                    <ul class="list-style-none list-icons d-flex flex-item text-center pt-2">
+                        {% for following in follower_people %}
+                        <li class="col px-2">
+                            <a href="{% url 'profile' following.id %}" data-toggle="tooltip" title="" data-original-title="{{profile.user.first_name}}">
+                                <img src="{{following.user.profile_image}}" alt="user" class="rounded-circle" width="50" />
+                            </a>
+                        </li>
+                        {% endfor %}
+                        {% if all_followers|length > 1%}
+                        <li class="col px-2">
+                            <a href="javascript:void(0)" data-toggle="tooltip" title="" data-original-title="More">
+                                <button class="btn btn-circle btn-info text-white btn-lg" href="javascript:void(0)">
+                                    +{{all_followers|length}}
+                                </button>
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <div class="card-body border-top">
+                    <ul class="list-style-none list-icons d-flex flex-item text-center">
+                        <li class="col">
+                            <a href="javascript:void(0)" class="text-muted" data-toggle="tooltip" title="" data-original-title="Website"><i class="fa fa-globe font-20"></i></a>
+                        </li>
+                        <li class="col">
+                            <a href="javascript:void(0)" class="text-muted" data-toggle="tooltip" title="" data-original-title="twitter"><i class="fa fa-twitter font-20"></i></a>
+                        </li>
+                        <li class="col">
+                            <a href="javascript:void(0)" class="text-muted" data-toggle="tooltip" title="" data-original-title="Facebook"><i class="fa fa-facebook-square font-20"></i></a>
+                        </li>
+                        <li class="col">
+                            <a href="javascript:void(0)" class="text-muted" data-toggle="tooltip" title="" data-original-title="Youtube"><i class="fa fa-youtube font-20"></i></a>
+                        </li>
+                        <li class="col">
+                            <a href="javascript:void(0)" class="text-muted" data-toggle="tooltip" title="" data-original-title="Linkdin"><i class="fa fa-linkedin font-20"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+       
+    </div>
+</div>
+
+
+<style type="text/css">
+
+
+{% comment "shit" %}{% endcomment %}
+
+.float-left {
+    margin-right: 10px;
+    width: 40px;
+    height: 40px;
+    float: left;
+    display: block;
+    border-radius: 50%;
+    background-color: #eee;
+    font-size: 20px;
+    line-height: 100%;
+    line-height: 43px;
+    text-align: center; }
+    .activity-list .float-left a {
+      display: inline-block;
+      color: #999; }
+    
+    li {
+        border-bottom: 1px solid #eee;
+        padding-bottom: 20px;
+        margin-bottom: 20px; }
+    
+        .act-content span.text-small {
+            display: block;
+            color: #999;
+            margin-bottom: 10px;
+            font-size: 12px;
+        }
+        .act-content {
+            overflow: hidden; }
+            .act-content span.text-small {
+              display: block;
+              color: #999;
+              margin-bottom: 10px;
+              font-size: 12px; }
+{% comment "end" %}{% endcomment %}
+
+body{
+    background: #edf1f5;
+
+}
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 0 solid transparent;
+    border-radius: 0;
+}
+ul.list-style-none {
+    margin: 0;
+    padding: 0;
+}
+ul.list-style-none li {
+    list-style: none;
+}
+
+.font-light {
+    font-weight: 300;
+}
+.font-20 {
+    font-size: 25px !important;
+}
+
+}
+ul.list-style-none li a {
+    color: #313131;
+    padding: 8px 0;
+    display: block;
+    text-decoration: none;
+}
+.text-muted {
+    color: #8898aa!important;
+}
+</style>
+
+
+                    
+
+                    
+            </div>
+            <div>
+            
+        </div>
+    </div>
+
+   
+    
+ 
+</div>
+</div>
+
+{% comment %} <style type="text/css">
+body{
+    background:#eee;
+    margin-top:20px;
+}
+
+html body .m-t-30 {
+    margin-top: 30px;
+}
+html body .m-t-10 {
+    margin-top: 10px;
+}
+html body .font-medium {
+    font-weight: 500;
+}
+.img-circle {
+    border-radius: 100%;
+}
+h4 {
+    line-height: 22px;
+    font-size: 18px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: #455a64;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+}
+.card .card-subtitle {
+    font-weight: 300;
+    margin-bottom: 15px;
+    color: #99abb4;
+}
+a.link {
+    color: #455a64;
+}
+.btn-secondary, .btn-secondary.disabled {
+    -webkit-box-shadow: 0 2px 2px 0 rgba(169, 169, 169, 0.14), 0 3px 1px -2px rgba(169, 169, 169, 0.2), 0 1px 5px 0 rgba(169, 169, 169, 0.12);
+    box-shadow: 0 2px 2px 0 rgba(169, 169, 169, 0.14), 0 3px 1px -2px rgba(169, 169, 169, 0.2), 0 1px 5px 0 rgba(169, 169, 169, 0.12);
+    -webkit-transition: 0.2s ease-in;
+    -o-transition: 0.2s ease-in;
+    transition: 0.2s ease-in;
+    background-color: #ffffff;
+    color: #67757c;
+    border-color: #b1b8bb;
+}
+.btn-circle {
+    border-radius: 100%;
+    width: 40px;
+    height: 40px;
+    padding: 10px;
+}
+.btn {
+    padding: 7px 12px;
+    cursor: pointer;
+}
+</style> {% endcomment %}
+
+<script type="text/javascript">
+
+</script>
+
+                {% comment %} <div class="card-content">
                   <div class="media">
                     <div class="media-left">
                       <figure class="image is-48x48">
-                        <img src="{{profile.profile_image}}"
+                        <img width="48px" height="48px" class="is-rounded"src="{{profile.user.profile_image}}"
                              alt="Placeholder image">
                       </figure>
                     </div>
                     <div class="media-content">
                       <p class="title is-4">
-                        {{ profile.user.username }}
+                        <a href="{% url "profile" profile.id %}" style="text-decoration:none">{{ profile.user.first_name }} {{ profile.user.last_name }}</a>
                       </p>
                       <p class="subtitle is-6">
                         @{{ profile.user.username|lower }}
@@ -79,12 +431,12 @@
                 
                             
                         </div>
-
+                        {% if profile.user.bio %}
                         <div class="content">
-                            <p class="title is-4">Bio</p>
+                            
                             
                                 <div class="box">
-                                    {{profile.bio}}
+                                    {{profile.user.bio}}
                                     <span class="is-small has-text-grey-light">
                                        
                                     </span>
@@ -92,52 +444,15 @@
                             
                             
                         </div> 
+                        {% endif %}
                        
-                        
-                      </p>
-                    </div>
-                  </div>
+                    
+                    </p> {% endcomment %}
+                    
                 </div>
-              </a>
+              
             </div>
           </div>
-
-
-
-        <h3 class="title is-4">
-            {{profile.user.username}} follows:
-        </h3>
-        <div class="content">
-            <ul>
-            {% for following in profile.follows.all %}
-                <li>
-                    <a href="{% url 'profile' following.id%}">
-                        {{ following }}
-                    </a>
-                </li>
-            {% endfor %}
-            </ul>
-        </div>
-    </div>
-
-    <div class="block">
-        
-        <h3 class="title is-4">
-            {{profile.user.username}} is followed by:
-        </h3>
-        <div class="content">
-            
-            <ul>
-            {% for follower in profile.followed_by.all %}
-                <li>
-                    <a href="{% url 'profile' follower.id %}">
-                        {{ follower }}
-                    </a>
-                </li>
-            {% endfor %}
-            </ul>
-        </div>
-    </div>
 
 </div>
 

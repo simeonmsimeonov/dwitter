@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+
+
+    <div class="field">
+
+        <form class="my-form" action="" method="POST">
+        
+            {% csrf_token %}
+            
+            <p>Are you sure you want to delete your dweet?</p>
+
+
+            <div class="block">
+                <div class="card">
+                  
+                    <div class="card-content">
+                      <div class="media">
+                        <div class="media-left">
+                          <figure class="image is-48x48">
+                            <img class="is-rounded" src="{{dweet.user.profile_image}}"
+                                 alt="Placeholder image">
+                          </figure>
+                        </div>
+                        <div class="media-content">
+        
+                          <p class="title is-4">
+                            <a style="text-decoration:none"href="{% url "profile" dweet.user.id %}">{{ dweet.user.username }}</a> <span class="is-small has-text-grey-light">
+                                ({{ dweet.created_at }})
+                            </span>
+                          </p>
+                          
+        
+                          <p class="subtitle is-6">
+                            @{{ dweet.user.username|lower }}
+                            
+                          </p>
+                          
+                            {{ dweet.body }}
+                            
+                        
+                        </div>
+                        
+                      </div>
+        
+                    </div>
+                  
+                </div>
+              </div>
+ 
+ 
+              
+              <a style="text-decoration:none;"><button type="submit" class="button is-danger is-normal">Delete</button></a>
+        
+              {% comment %} <div class="row">
+                <div class="col-12">
+                  <input type="submit" value="Login"  class="btn btn-primary">
+                </div>
+              </div> {% endcomment %}
+            </form>
+
+
+{% endblock %}

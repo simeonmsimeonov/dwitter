@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+
+
+    <div class="field">
+
+        
+
+            <div class="tab-pane" id="account">
+              <h6>ACCOUNT DELETE</h6>
+              <hr>
+              {% csrf_token %}
+              <form method="POST">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                  <div class="block">
+                    <div class="card">
+                        <div class="card-content">
+                          <div class="media">
+                            <div class="media-left">
+                              <figure class="image is-48x48">
+                                <img class="is-rounded" src="{{profile.profile_image}}"
+                                     alt="Placeholder image">
+                              </figure>
+                            </div>
+                            <div class="media-content">
+                              <p class="title is-4">
+                                <a style="text-decoration:none"href="">{{ profile.username }}</a> <span class="is-small has-text-grey-light">
+                                    ({{ profile.date_joined }})
+                                </span>
+                              </p>
+                              <p class="subtitle is-6">
+                                @{{ profile.username|lower }}
+                              </p>
+                                {{profile.bio}}
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                  </div>
+                </div>
+                <hr>
+                <div class="form-group">
+                  <p class="text-muted font-size-sm">Once you delete your account, there is no going back. Please be certain.</p>
+                </div>
+                <a style="text-decoration:none" href="">
+                <button class="btn btn-danger" type="submit">Delete Account</button>
+                </a>
+              </form>
+            </div>
+{% endblock %}

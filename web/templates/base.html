@@ -1,3 +1,5 @@
+{% load static %}
+
 <!-- dwitter/templates/base.html -->
 
 <!DOCTYPE html>
@@ -8,17 +10,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet"
           href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
-    <title>Dwitter</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" 
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="icon" href="http://clipart-library.com/new_gallery/189635_lightbulb-icon-png.png" type="image/icon type">
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <link href="https://netdna.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://netdna.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    
+    
+    {% block title %}
+    <title style="">Statter</title>
+    {% endblock %}
 </head>
+
+
+
 <body>
-    <a href="{% url 'dashboard' %}">
+    <a style="text-decoration:none" href="{% url 'dashboard' %}">
         <section class="hero is-small is-info mb-4">
+            
             <div class="hero-body">
-                <h1 class="title is-1">Dwitter</h1>
-                <p class"subtitle is-4">Your tiny social network built with Django</p>
+                <h1 class="title is-1" style="font-weight: bold"><img width="50px" height="50px" src="http://clipart-library.com/new_gallery/189635_lightbulb-icon-png.png">Statter</h1>
+                
+                <p class"subtitle is-4">Your tiny social network built with Django & Bulma</p>
+                
+               
             </div>
+            
+            {% if request.user.is_authenticated %}
+                <button class="button is-success" name="Login" value="Login"> <a href="{% url 'dashboard' %}" style="text-decoration:none">Dashboard</a></button>
+            
+               <button class="button is-danger" name="Login" value="Login"> <a href="{% url 'logout' %}" style="text-decoration:none">Logout</a></button>
+            {% else %}
+            <button class="button is-success"><a href="{% url 'login' %}" style="text-decoration:none">Login</a></button>
+            {% endif %}
+            
         </section>
-    </a>
+        
+    </a> 
     <div class="container">
         <div class="columns">
             {% block content %}
@@ -26,5 +58,17 @@
             {% endblock content %}
         </div>
     </div>
+
+  
 </body>
+
+<footer class="footer">
+    <div class="content has-text-centered">
+      <p>
+        <strong>Statter</strong> by <a id="credit" href="https://jgthms.com">Simeon M. Simeonov</a>. The source code is licensed
+        <a id="credit" href="http://opensource.org/licenses/mit-license.php">MIT</a>. The website content
+        is licensed <a id="credit" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY NC SA 4.0</a>.
+      </p>
+    </div>
+  </footer>
 </html>
