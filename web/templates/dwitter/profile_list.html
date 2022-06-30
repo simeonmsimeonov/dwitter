@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block content %}
 
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+ <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="{% static 'css/profile_list.css' %}" rel="stylesheet">
 <div class="container profile-page">
     <div class="row">
       {% for profile in profiles %}
@@ -20,30 +21,6 @@
                               <p>{{profile.user.bio}}</p>
                             {% endif %}
                             
-                            {% comment %} <div>
-                                <button class="btn btn-primary btn-round">Follow</button>
-                                <button class="btn btn-primary btn-round btn-simple">Message</button>
-                            </div> {% endcomment %}
-                           
-                            
-                            {% comment %} <div class="block">
-                                {% if request.user.id != profile.id %}
-                                <form method="post">
-                                    {% csrf_token %}
-                                    <div class="buttons has-addons">
-                                        {% if profile in request.user.profile.follows.all %}
-                                        
-                                            <button class="button is-success is-static">Follow</button>
-                                            <button class="button is-danger" name="follow" value="unfollow">Unfollow</button>
-                                        {% else %}
-                                            
-                                            <button class="button is-success" name="follow" value="follow">Follow</button>
-                                            <button class="button is-danger is-static">Unfollow</button>
-                                        {% endif %}
-                                    </div>
-                                </form>
-                                {% endif %}
-                                </div>  {% endcomment %}
                             <p class="social-icon m-t-5 m-b-0">
                                 <a title="Twitter" href="javascript:void(0);"><i class="fa fa-twitter"></i></a>
                                 <a title="Facebook" href="javascript:void(0);"><i class="fa fa-facebook"></i></a>
@@ -57,88 +34,8 @@
             </div>
         </div>
       {% endfor %}
-        
-        
-      
-
 	</div>
 </div>
 
-<style type="text/css">
-body{
-    
-    background:#eee;    
-}
-a {
-    color: navyblue;
-}
-.m-t-5{
-    margin-top: 5px;   
-}
-.card {
-    background: #fff;
-    margin-bottom: 30px;
-    transition: .5s;
-    border: 0;
-    border-radius: .1875rem;
-    display: inline-block;
-    position: relative;
-    width: 100%;
-    box-shadow: none;
-}
-.card .body {
-    font-size: 14px;
-    color: #424242;
-    padding: 20px;
-    font-weight: 400;
-}
-.profile-page .profile-header {
-    position: relative
-}
-
-.profile-page .profile-header .profile-image img {
-    border-radius: 50%;
-    width: 140px;
-    border: 3px solid #fff;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23)
-}
-
-.profile-page .profile-header .social-icon a {
-    margin: 0 5px
-}
-
-.profile-page .profile-sub-header {
-    min-height: 60px;
-    width: 100%
-}
-
-.profile-page .profile-sub-header ul.box-list {
-    display: inline-table;
-    table-layout: fixed;
-    width: 100%;
-    background: #eee
-}
-
-.profile-page .profile-sub-header ul.box-list li {
-    border-right: 1px solid #e0e0e0;
-    display: table-cell;
-    list-style: none
-}
-
-.profile-page .profile-sub-header ul.box-list li:last-child {
-    border-right: none
-}
-
-.profile-page .profile-sub-header ul.box-list li a {
-    display: block;
-    padding: 15px 0;
-    color: #424242
-}
-
-</style>
-
-<script type="text/javascript">
-
-</script>
 
 {% endblock %}

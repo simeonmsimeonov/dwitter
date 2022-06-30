@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
+{% load static %}
 {% block title %}
     <title>Dashboard</title>
 {% endblock title %}
@@ -8,6 +9,8 @@
 
 {% block content %}
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+<link href="{% static 'css/dashboard.css' %}" rel="stylesheet">
+
 
     <div class="column"> 
       
@@ -20,6 +23,9 @@
                 <li class="clearfix">
                     <div class="float-left">
                         <a href="#"><img height="60px" width="60px"src="{{dweet.user.profile_image}}" alt="" class="img-fluid rounded-circle"></a>
+                        {% if dweet.user.is_active %}
+                        
+                        {% endif %}
                     </div>
                     <div class="act-content">
                         <div class="font400">
@@ -37,53 +43,6 @@
                     </div>
                 </li>
             </ul>
-
-            
-
-
-
-            
-            {% comment %} <div class="card-content"> 
-                  <div class="media"> 
-                     <div class="media-left">
-                      <figure class="image is-48x48">
-                        <img class="is-rounded" src="{{dweet.user.profile_image}}"
-                            alt="Placeholder image">
-                      </figure>
-                    </div> 
-                    <div class="media-content">
-                        <div class="field is-grouped">
-                     <p class="title is-4">
-                        <a style="text-decoration:none"href="{% url "profile" dweet.user.id %}">{{ dweet.user.first_name }} {{dweet.user.last_name }} </a>
-                            {% if dweet.tag %}
-                        is feeling <span class="tag is-warning is-light">{{dweet.tag|upper}}</span>
-                            {% endif %}
-                        <span class="is-small has-text-grey-light">
-                            ({{ dweet.created_at|date:"d/M/Y" }}, {{ dweet.created_at|time:"H:i" }})
-                        </span>
-                      </p> 
-                        </div>
-                      
-
-                  <p class="subtitle is-6">
-                    @{{ dweet.user.username|lower }}
-                    
-                  </p>
-                
-                  <p>
-                    {{ dweet.body }}
-                  </p> 
-                    
-                
-                </div>
-                {% if dweet.user.id == request.user.id %}
-                <a href="{% url 'dweet delete' dweet.id%}" style="text-decoration:none;"><button class="button is-danger is-small">Delete</button></a>
-                {% endif %}
-                
-              </div> 
-
-            </div> {% endcomment %}
-          
         </div>
       </div>
     {% endfor %}
@@ -114,13 +73,22 @@
 
 
 <div class="column is-one-third">
+    <center>
     <div class="block">
-    <form class="form-inline" method="GET" action="{% url 'search bar' %}">
-        
-        <input class="form-control mr-sm-2" name="q" type="text" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
-      </form>
+        <div class="col-lg-4 col-md-4 col-12">
+            <div class="profile-image float-md-right" style="position: relative">
+                
+            <a style="text-decoration: none"href="{% url 'profile' request.user.id %}"><img src="{{request.user.profile_image}}" alt="">
+                
+                <h1 style="font-size: 20px">{{request.user.first_name}} {{request.user.last_name}}</h1>
+            </a> 
+        </div>
+        </div>
+
     </div>
+</center>
+
+   
 
     <div class="block">
         <a href="{% url 'profile_list' %}" style="text-decoration:none">
@@ -130,13 +98,14 @@
         </a>
     </div>
     
+
     <div class="block">
-        <a href="{% url 'profile' request.user.profile.id %}" style="text-decoration:none">
-            <button class="button is-info is-light is-outlined is-fullwidth">
-                My Profile
-            </button>
-        </a>
-    </div>
+        <form class="form-inline" method="GET" action="{% url 'search bar' %}">
+            
+            <input class="form-control mr-sm-2" name="q" type="text" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+          </form>
+        </div>
 
    
 
@@ -154,102 +123,7 @@
 
 </div>
 
-<style type="text/css">
 
-    {% comment "timeline shit" %}{% endcomment %}
-  
-
-    .float-left {
-        margin-right: 10px;
-        width: 40px;
-        height: 40px;
-        float: left;
-        display: block;
-        border-radius: 50%;
-        background-color: #eee;
-        font-size: 20px;
-        line-height: 100%;
-        line-height: 43px;
-        text-align: center; }
-        .activity-list .float-left a {
-          display: inline-block;
-          color: #999; }
-        
-        li {
-            border-bottom: 1px solid #eee;
-            padding-bottom: 20px;
-            margin-bottom: 20px; }
-        
-            .act-content span.text-small {
-                display: block;
-                color: #999;
-                margin-bottom: 10px;
-                font-size: 12px;
-            }
-            .act-content {
-                overflow: hidden; }
-                .act-content span.text-small {
-                  display: block;
-                  color: #999;
-                  margin-bottom: 10px;
-                  font-size: 12px; }
-    {% comment "end of timeline shit" %}{% endcomment %}
-    .card,
-  .post-editor,
-  .stream-post {
-      padding: .75rem;
-      background: transparent;
-      border: 1px solid #eceeef;
-      border-radius: .25rem;
-      margin-bottom: 1.5rem
-  }
-  .stream-post {
-    position: relative
-}
-
-
-#profile-settings textarea {
-    padding: 1rem;
-    line-height: 1.8;
-    height: 140px;
-    font-style: italic
-}
-
-#profile-settings label {
-    font-size: 1rem
-}
-
-#profile-settings .form-control {
-    color: #818a91
-}
-
-#profile-settings .form-control,
-#profile-settings .form-control:focus {
-    box-shadow: none;
-    outline: none
-}
-
-.edit-cover {
-    position: relative;
-    padding: .5rem;
-    border-radius: .25rem;
-    border: 1px solid #eceeef;
-    background: #f7f7f9;
-    height: 400px
-}
-
-.edit-cover img {
-    border-radius: .25rem;
-    width: 100%;
-    height: 100%
-}
-
-.edit-cover .btn {
-    position: absolute;
-    right: 32px;
-    bottom: 32px
-}
-  
 {% endblock content %}
 
 
