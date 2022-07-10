@@ -1,6 +1,7 @@
 # statter
 Statter - your tiny social network built with Django & Bulma. 
-
+Statter is small social network where people can connect and share text-based posts.
+Users have full CRUD functionalities over their content and profile.
 Overview
 ![signup](https://user-images.githubusercontent.com/65036762/178137208-4266382d-ab0d-4ed4-9e20-cc485a7997fb.jpg)
 ![profiles](https://user-images.githubusercontent.com/65036762/178137213-0510cf2c-7691-40b9-9044-8ec2a458f7ac.jpg)
