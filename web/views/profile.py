@@ -79,6 +79,8 @@ class ProfileEditView(views.UpdateView, auth_mixins.PermissionRequiredMixin):
             return redirect('login')
         elif not current_user[0].id == self.request.user.id:
             return redirect('dashboard')
+        return super().dispatch(request, pk)
+        
         
     def get_success_url(self):
         profile = self.get_object()

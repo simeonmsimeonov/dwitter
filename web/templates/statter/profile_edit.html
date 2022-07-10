@@ -130,9 +130,10 @@
                            <label class="d-block text-danger">Delete Account</label>
                            <p class="text-muted font-size-sm">Once you delete your account, there is no going back. Please be certain.</p>
                         </div>
-                        <a style="text-decoration:none" href="">
-                        <button class="btn btn-danger" type="submit">Delete Account</button>
-                        </a>
+                        
+                         <button class="btn btn-danger" type="">
+                           <a style="text-decoration:none; color: white;" href="{% url 'profile delete' profile.pk %}">Delete Account</a></button> 
+                       
                      </form>
                   </div>
                   <div class="tab-pane" id="security">

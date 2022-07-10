@@ -32,6 +32,8 @@ class UserManager(BaseUserManager):
         )
 
         user.set_password(password)
+        user.is_active = True
+        user.is_staff = True
         if commit:
             user.save(using=self._db)
         return user
