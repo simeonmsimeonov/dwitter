@@ -1,4 +1,4 @@
-# Statter - your tiny social network built with Django & Bulma. 
+# 💡 Statter - your tiny social network built with Django & Bulma. 
 A small social network where people can connect and share text-based posts.
 Users have full CRUD functionalities over their content and profile. Built with Django as well as Bulma & Bootstrap CSS frameworks.
 Overview of the main pages in the app.
