@@ -1,5 +1,3 @@
-
-
 from django.conf import settings
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -9,10 +7,9 @@ from django.contrib.auth.models import (
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-
 from web.managers import UserManager
 from django.utils.text import slugify
-# Create your models here.
+
 
 
 
@@ -71,12 +68,10 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def has_perm(self, perm, obj=None):
         "Does the user have a specific permission?"
-        # Simplest possible answer: Yes, always
         return True
 
     def has_module_perms(self, app_label):
         "Does the user have permissions to view the app `app_label`?"
-        # Simplest possible answer: Yes, always
         return True
     
     def save(self, *args, **kwargs):
@@ -96,9 +91,6 @@ class Profile(models.Model):
         symmetrical=False, 
         blank=True)
     
-   
-    
-
     def __str__(self):
         return self.user.username
     
@@ -122,7 +114,6 @@ class Dweet(models.Model):
     body = models.CharField(max_length=140)
     created_at = models.DateTimeField(auto_now_add=True)
     tag = models.ForeignKey(Tag, related_name="tags", on_delete=models.SET_NULL, null=True, blank=True)
-
 
     def __str__(self):
         return (

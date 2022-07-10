@@ -1,238 +1,179 @@
 {% extends 'base.html' %}
 {% load static %}
-
 {% block title %}
-    <title>{{profile.user.first_name}} {{profile.user.last_name}} (@{{profile}})</title>
+<title>{{profile.user.first_name}} {{profile.user.last_name}} (@{{profile}})</title>
 {% endblock title %}
-
-
-
 {% block content %}
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <link href="{% static 'css/profile.css' %}" rel="stylesheet">
 <div class="column">
-
-    <div class="block">
-    <h1 class="title is-1">
-        {{profile.user.username|upper}}'s States
-    </h1>
-    
-    </div>
-    
-    
-   
- 
-        {% if profile.user.dweets %}
-            
-            {% for dweet in page_obj.object_list%}
-
-           
-               <div class="box">
-                <ul class="activity-list list-unstyled;" style="list-style-type: none">
-                    <li class="clearfix">
-                    <div class="float-left">
-                        <a href="{% url 'profile' dweet.user.id %}"><img height="60px" width="60px"src="{{dweet.user.profile_image}}" alt="" class="img-fluid rounded-circle"></a>
-                    </div>
-                    <div class="act-content">
-                        <div class="font400">
-
-                            <a style="text-decoration:none"href="{% url "profile" dweet.user.id %}" class="font600">{{ dweet.user.first_name }} {{dweet.user.last_name }} </a>
-                            {% if dweet.tag %}
-                        is feeling <span class="tag is-warning is-light">{{dweet.tag|upper}}</span>
-                            {% endif %}
-                        </div>
-                        <span class="text-small">{{dweet.created_at}}</span>
-                        <p>
-                            {{dweet.body}}
-                        </p>
-                        
-                        {% if dweet.user.id == request.user.id %}
-                        <a href="{% url 'dweet delete' dweet.id%}" style="text-decoration:none;"><button class="button is-danger is-small">Delete</button></a>
-                        {% endif %}
-                        
-                    </div>
-                   
-                </li>
-            </ul>
-       
-                  
-                </div> 
-            {% endfor %}
-        {% else %}
-            <h1 class="title is-1">
-                You don't have any states. Write some.
-            </h1>
-        {% endif %}
-            {{dweets}}
-        <center style="text-decoration:none">
-            {%if page_obj.has_previous %} 
-                
-                <a style="text-decoration:none; color: white; background-color: orange; border-color: orange" href="?page={{page_obj.previous_page_number}}" class="pagination-next">Previous</a> {# link to the prev page #}
-            {% endif %}
-            
-            <a style="text-decoration:none; color: orange; background-color: white; border-color: orange" class="pagination-link is-current" aria-label="Page 46" aria-current="page">{{page_obj.number}}</a>
-    
-      
-            {%if page_obj.has_next %} 
-                
-                <a style="text-decoration:none; color: white; background-color: orange; border-color: orange" href="?page={{page_obj.next_page_number}}" class="pagination-next">Next page</a> {# link to the next page #}
-            {% endif %}
-        </center>
-    
+   <div class="block">
+      <h1 class="title is-1">
+         {{profile.user.username|upper}}'s States
+      </h1>
+   </div>
+   {% if profile.user.dweets %}
+   {% for dweet in page_obj.object_list%}
+   <div class="box">
+      <ul class="activity-list list-unstyled;" style="list-style-type: none">
+         <li class="clearfix">
+            <div class="float-left">
+               <a href="{% url 'profile' dweet.user.id %}"><img height="60px" width="60px"src="{{dweet.user.profile_image}}" alt="" class="img-fluid rounded-circle"></a>
+            </div>
+            <div class="act-content">
+               <div class="font400">
+                  <a style="text-decoration:none"href="{% url "profile" dweet.user.id %}" class="font600">{{ dweet.user.first_name }} {{dweet.user.last_name }} </a>
+                  {% if dweet.tag %}
+                  is feeling <span class="tag is-warning is-light">{{dweet.tag|upper}}</span>
+                  {% endif %}
+               </div>
+               <span class="text-small">{{dweet.created_at}}</span>
+               <p>
+                  {{dweet.body}}
+               </p>
+               {% if dweet.user.id == request.user.id %}
+               <a href="{% url 'dweet delete' dweet.id%}" style="text-decoration:none;"><button class="button is-danger is-small">Delete</button></a>
+               {% endif %}
+            </div>
+         </li>
+      </ul>
+   </div>
+   {% endfor %}
+   {% else %}
+   <h1 class="title is-1">
+      You don't have any states. Write some.
+   </h1>
+   {% endif %}
+   {{dweets}}
+   <center style="text-decoration:none">
+      {%if page_obj.has_previous %} 
+      <a style="text-decoration:none; color: white; background-color: dodgerblue; border-color: dodgerblue" href="?page={{page_obj.previous_page_number}}" class="pagination-next">Previous</a> {# link to the prev page #}
+      {% endif %}
+      <a style="text-decoration:none; color: white; background-color: dodgerblue; border-color: dodgerblue; position: static;" class="pagination-link is-current" aria-label="Page 46" aria-current="page">{{page_obj.number}}</a>
+      {%if page_obj.has_next %} 
+      <a style="text-decoration:none; color: white; background-color: dodgerblue; border-color: dodgerblue; postion: static" href="?page={{page_obj.next_page_number}}" class="pagination-next">Next page</a> {# link to the next page #}
+      {% endif %}
+   </center>
 </div>
-
-
 <div class="column is-one-third">
-
-    <div class="block">
-        <a href="{% url 'profile_list' %}" style="text-decoration:none">
-            <button class="button is-dark is-outlined is-fullwidth">
-                All Profiles
-            </button>
-        </a>
-    </div>
-
-    <div class="block">
-
-                    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
-
-            <div class="card">
-                <div class="p-4">
-
-                    <div class="d-flex flex-row">
-                        <div class=""><img src="{{profile.user.profile_image}}" alt="user" class="rounded-circle" width="100" /></div>
-                        <div class="pl-4">
-                            <h3>{{profile.user.first_name}} {{profile.user.last_name}}
-
-                            </h3>
-                            
-                            <h4>@{{profile.user.username}}</h4>
-                            {% if profile.user.id == request.user.id %}
-                            <a href="{% url 'profile edit' profile.user.id %}" style="text-decoration: none"><button class="button is-warning"><i class='fa fa-edit'></i><strong>Edit</strong></button></a>
-                            {% endif %}
-                            <div class="block">
-                                {% if request.user.id != profile.user.id %}
-                                <form method="post">
-                                    {% csrf_token %}
-                                    <div class="buttons has-addons">
-                                        {% if profile in user.profile.follows.all %}
-                                        <button class="button is-success is-static">Follow</button>
-                                        <button class="button is-danger" name="follow" value="unfollow">Unfollow</button>
-                                        {% else %}
-                                        <button class="button is-success" name="follow" value="follow">Follow</button>
-                                        <button class="button is-danger is-static">Unfollow</button>
-                                        {% endif %}
-                                    </div>
-                                </form>
-                                {% endif %}
-                                </div> 
-
-                            
+   <div class="block">
+      <a href="{% url 'profile_list' %}" style="text-decoration:none">
+      <button class="button is-dark is-outlined is-fullwidth">
+      All Profiles
+      </button>
+      </a>
+   </div>
+   <div class="block">
+      <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
+      <div class="card">
+         <div class="p-4">
+            <div class="d-flex flex-row">
+               <div class=""><img src="{{profile.user.profile_image}}" alt="user" class="rounded-circle" width="100" /></div>
+               <div class="pl-4">
+                  <h3>{{profile.user.first_name}} {{profile.user.last_name}}
+                  </h3>
+                  <h4>@{{profile.user.username}}</h4>
+                  {% if profile.user.id == request.user.id %}
+                  <a href="{% url 'profile edit' profile.user.id %}" style="text-decoration: none"><button class="button is-warning"><i class='fa fa-edit'></i><strong>Edit</strong></button></a>
+                  {% endif %}
+                  <div class="block">
+                     {% if request.user.id != profile.user.id %}
+                     <form method="post">
+                        {% csrf_token %}
+                        <div class="buttons has-addons">
+                           {% if profile in user.profile.follows.all %}
+                           <button class="button is-success is-static">Follow</button>
+                           <button class="button is-danger" name="follow" value="unfollow">Unfollow</button>
+                           {% else %}
+                           <button class="button is-success" name="follow" value="follow">Follow</button>
+                           <button class="button is-danger is-static">Unfollow</button>
+                           {% endif %}
                         </div>
-                    </div>
-                    <div class="row mt-5">
-                        <div class="col border-right text-center">
-                            <h2 class="font-light">{{profile.user.dweets.all|length}}</h2>
-                            {% if profile.user.dweets.all|length > 1 %}
-                                <h4 class="text-uppercase">Posts</h4>
-                            {% else %}
-                                <h4 class="text-uppercase">Post</h4>
-                            {% endif %}
-                        </div>
-                        <div class="col border-right text-center">
-                            <h2 class="font-light">{{profile.followed_by.all|length}}</h2>
-                            {% if profile.followed_by.all|length > 1 %}
-                                <h4 class="text-uppercase">Followers</h4>
-                            {% else %}
-                                <h4 class="text-uppercase">Follower</h4>
-                            {% endif %}
-                        </div>
-                        <div class="col text-center">
-                            <h2 class="font-light">{{profile.follows.all|length}}</h2>
-                            <h4 class="text-uppercase">Following</h4>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body border-top">
-                    {% if profile.user.bio %}
-                    <p class="text-center aboutscroll">
-
-                        {{profile.user.bio}}
-                    </p>
-                    
-                    <hr />
-                    {% endif %}
-                    <h4 class="font-medium text-center mt-4">Followers</h4>
-                    <ul class="list-style-none list-icons d-flex flex-item text-center pt-2">
-                        {% for following in follower_people %}
-                        <li class="col px-2">
-                            <a href="{% url 'profile' following.id %}" data-toggle="tooltip" title="" data-original-title="{{profile.user.first_name}}">
-                                <img src="{{following.user.profile_image}}" alt="user" class="rounded-circle" width="50" />
-                            </a>
-                        </li>
-                        {% endfor %}
-                        {% if all_followers|length > 1%}
-                        <li class="col px-2">
-                            <a href="javascript:void(0)" data-toggle="tooltip" title="" data-original-title="More">
-                                <button class="btn btn-circle btn-info text-white btn-lg" href="javascript:void(0)">
-                                    +{{all_followers|length}}
-                                </button>
-                            </a>
-                        </li>
-                        {% endif %}
-                    </ul>
-                </div>
-                <div class="card-body border-top">
-                    <ul class="list-style-none list-icons d-flex flex-item text-center">
-                        <li class="col">
-                            <a href="javascript:void(0)" class="text-muted" data-toggle="tooltip" title="" data-original-title="Website"><i class="fa fa-globe font-20"></i></a>
-                        </li>
-                        <li class="col">
-                            <a href="javascript:void(0)" class="text-muted" data-toggle="tooltip" title="" data-original-title="twitter"><i class="fa fa-twitter font-20"></i></a>
-                        </li>
-                        <li class="col">
-                            <a href="javascript:void(0)" class="text-muted" data-toggle="tooltip" title="" data-original-title="Facebook"><i class="fa fa-facebook-square font-20"></i></a>
-                        </li>
-                        <li class="col">
-                            <a href="javascript:void(0)" class="text-muted" data-toggle="tooltip" title="" data-original-title="Youtube"><i class="fa fa-youtube font-20"></i></a>
-                        </li>
-                        <li class="col">
-                            <a href="javascript:void(0)" class="text-muted" data-toggle="tooltip" title="" data-original-title="Linkdin"><i class="fa fa-linkedin font-20"></i></a>
-                        </li>
-                    </ul>
-                </div>
+                     </form>
+                     {% endif %}
+                  </div>
+               </div>
             </div>
-       
-    </div>
-</div>
-
-
-
-
-
-                    
-
-                    
+            <div class="row mt-5">
+               <div class="col border-right text-center">
+                  <h2 class="font-light">{{profile.user.dweets.all|length}}</h2>
+                  {% if profile.user.dweets.all|length > 1 %}
+                  <h4 class="text-uppercase">Posts</h4>
+                  {% else %}
+                  <h4 class="text-uppercase">Post</h4>
+                  {% endif %}
+               </div>
+               <div class="col border-right text-center">
+                  <h2 class="font-light">{{profile.followed_by.all|length}}</h2>
+                  {% if profile.followed_by.all|length > 1 %}
+                  <h4 class="text-uppercase">Followers</h4>
+                  {% else %}
+                  <h4 class="text-uppercase">Follower</h4>
+                  {% endif %}
+               </div>
+               <div class="col text-center">
+                  <h2 class="font-light">{{profile.follows.all|length}}</h2>
+                  <h4 class="text-uppercase">Following</h4>
+               </div>
             </div>
-            <div>
-            
-        </div>
-    </div>
-
-   
-    
- 
+         </div>
+         <div class="card-body border-top">
+            {% if profile.user.bio %}
+            <p class="text-center aboutscroll">
+               {{profile.user.bio}}
+            </p>
+            <hr />
+            {% endif %}
+            <h4 class="font-medium text-center mt-4">Followers</h4>
+            <ul class="list-style-none list-icons d-flex flex-item text-center pt-2">
+               {% for following in follower_people %}
+               <li class="col px-2">
+                  <a href="{% url 'profile' following.id %}" data-toggle="tooltip" title="" data-original-title="{{profile.user.first_name}}">
+                  <img src="{{following.user.profile_image}}" alt="user" class="rounded-circle" width="50" />
+                  </a>
+               </li>
+               {% endfor %}
+               {% if all_followers|length > 1%}
+               <li class="col px-2">
+                  <a href="javascript:void(0)" data-toggle="tooltip" title="" data-original-title="More">
+                  <button class="btn btn-circle btn-info text-white btn-lg" href="javascript:void(0)">
+                  +{{all_followers|length}}
+                  </button>
+                  </a>
+               </li>
+               {% endif %}
+            </ul>
+         </div>
+         <div class="card-body border-top">
+            <ul class="list-style-none list-icons d-flex flex-item text-center">
+               <li class="col">
+                  <a href="javascript:void(0)" class="text-muted" data-toggle="tooltip" title="" data-original-title="Website"><i class="fa fa-globe font-20"></i></a>
+               </li>
+               <li class="col">
+                  <a href="javascript:void(0)" class="text-muted" data-toggle="tooltip" title="" data-original-title="twitter"><i class="fa fa-twitter font-20"></i></a>
+               </li>
+               <li class="col">
+                  <a href="javascript:void(0)" class="text-muted" data-toggle="tooltip" title="" data-original-title="Facebook"><i class="fa fa-facebook-square font-20"></i></a>
+               </li>
+               <li class="col">
+                  <a href="javascript:void(0)" class="text-muted" data-toggle="tooltip" title="" data-original-title="Youtube"><i class="fa fa-youtube font-20"></i></a>
+               </li>
+               <li class="col">
+                  <a href="javascript:void(0)" class="text-muted" data-toggle="tooltip" title="" data-original-title="Linkdin"><i class="fa fa-linkedin font-20"></i></a>
+               </li>
+            </ul>
+         </div>
+      </div>
+   </div>
 </div>
 </div>
-
-
-
-                    
-                </div>
-              
-            </div>
-          </div>
-
+<div>
 </div>
-
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 {% endblock content %}

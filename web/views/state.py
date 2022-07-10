@@ -1,9 +1,6 @@
-
 from django.urls import reverse_lazy
 from web.models import Dweet
 from django.views.generic.edit import DeleteView
-
-
 
 
 class DweetDeleteView(DeleteView):

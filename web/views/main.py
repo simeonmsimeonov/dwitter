@@ -8,11 +8,9 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def dashboard(request):
     form = DweetForm(request.POST or None)
-
     if not request.user.is_authenticated:
         return redirect("login")
     
-
     if request.method == "POST":
         form = DweetForm(request.POST)
         if form.is_valid():
@@ -21,31 +19,25 @@ def dashboard(request):
             dweet.save()
             return redirect("dashboard")
     
-    followed_dweets = Dweet.objects.filter(user__profile__in=request.user.profile.follows.all()).order_by("-created_at")
-    p = Paginator(followed_dweets, 5)
-    # getting the desired page number from url
+    followed_states = Dweet.objects.filter(user__profile__in=request.user.profile.follows.all()).order_by("-created_at")
+    p = Paginator(followed_states, 5)
     page_number = request.GET.get('page')
     try:
-        page_obj = p.get_page(page_number)  # returns the desired page object
+        page_obj = p.get_page(page_number)
     except PageNotAnInteger:
-        # if page_number is not an integer then assign the first page
         page_obj = p.page(1)
     except EmptyPage:
-        # if page is empty then return last page
         page_obj = p.page(p.num_pages)
-    
-    return render(request, "dwitter/dashboard.html", {"form": form, "dweets": followed_dweets, "page_obj": page_obj})
+    return render(request, "dwitter/dashboard.html", {"form": form, "dweets": followed_states, "page_obj": page_obj})
 
 def profile_list(request):
     profiles = Profile.objects.all()
-    
     return render(request, "dwitter/profile_list.html", {"profiles": profiles})
 
 
 class SearchView(views.ListView):
     model = User
     template_name = "dwitter/search.html"
-
 
     def get_queryset(self):
         query = self.request.GET.get("q")

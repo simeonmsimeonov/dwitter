@@ -2,128 +2,85 @@
 {% load crispy_forms_tags %}
 {% load static %}
 {% block title %}
-    <title>Dashboard</title>
+<title>Dashboard</title>
 {% endblock title %}
-
-
-
 {% block content %}
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <link href="{% static 'css/dashboard.css' %}" rel="stylesheet">
-
-
-    <div class="column"> 
-      
-    {% for dweet in page_obj.object_list %}
-            
-
-     <div class="block">
-        <div class="card">
-            <ul class="activity-list list-unstyled">
-                <li class="clearfix">
-                    <div class="float-left">
-                        <a href="#"><img height="60px" width="60px"src="{{dweet.user.profile_image}}" alt="" class="img-fluid rounded-circle"></a>
-                        {% if dweet.user.is_active %}
-                        
-                        {% endif %}
-                    </div>
-                    <div class="act-content">
-                        <div class="font400">
-
-                            <a style="text-decoration:none"href="{% url "profile" dweet.user.id %}" class="font600">{{ dweet.user.first_name }} {{dweet.user.last_name }} </a>
-                            {% if dweet.tag %}
-                        is feeling <span class="tag is-warning is-light">{{dweet.tag|upper}}</span>
-                            {% endif %}
-                        </div>
-                        <span class="text-small">{{dweet.created_at}}</span>
-                        <p>
-                            {{dweet.body}}
-                        </p>
-                        
-                    </div>
-                </li>
-            </ul>
-        </div>
+<div class="column">
+   {% for dweet in page_obj.object_list %}
+   <div class="block">
+      <div class="card">
+         <ul class="activity-list list-unstyled">
+            <li class="clearfix">
+               <div class="float-left">
+                  <a href="#"><img height="60px" width="60px"src="{{dweet.user.profile_image}}" alt="" class="img-fluid rounded-circle"></a>
+                  {% if dweet.user.is_active %}
+                  {% endif %}
+               </div>
+               <div class="act-content">
+                  <div class="font400">
+                     <a style="text-decoration:none"href="{% url "profile" dweet.user.id %}" class="font600">{{ dweet.user.first_name }} {{dweet.user.last_name }} </a>
+                     {% if dweet.tag %}
+                     is feeling <span class="tag is-warning is-light">{{dweet.tag|upper}}</span>
+                     {% endif %}
+                  </div>
+                  <span class="text-small">{{dweet.created_at}}</span>
+                  <p>
+                     {{dweet.body}}
+                  </p>
+               </div>
+            </li>
+         </ul>
       </div>
-    {% endfor %}
-
-    <center style="text-decoration:none">
-        {%if page_obj.has_previous %} {# whether the previous page exists #}
-            
-            <a style="text-decoration:none; color: white; background-color: orange; border-color: orange" href="?page={{page_obj.previous_page_number}}" class="pagination-next">Previous</a> {# link to the prev page #}
-        {% endif %}
-        {# the current page number #}
-        <a style="text-decoration:none; color: orange; background-color: white; border-color: orange" class="pagination-link is-current" aria-label="Page 46" aria-current="page">{{page_obj.number}}</a>
-
-  
-        {%if page_obj.has_next %} {# whether the next page exists #}
-            
-            <a style="text-decoration:none; color: white; background-color: orange; border-color: orange" href="?page={{page_obj.next_page_number}}" class="pagination-next">Next page</a> {# link to the next page #}
-        {% endif %}
-    </center>
-
-
-
-
-
-
+   </div>
+   {% endfor %}
+   <center style="text-decoration:none">
+      {%if page_obj.has_previous %} 
+      <a style="text-decoration:none; color: white; background-color: dodgerblue; border-color: dodgerblue;" href="?page={{page_obj.previous_page_number}}" class="pagination-next">Previous</a> {# link to the prev page #}
+      {% endif %}
+      <a style="text-decoration:none; color: white; background-color: dodgerblue; border-color: dodgerblue" class="pagination-link is-current" aria-label="Page 46" aria-current="page">{{page_obj.number}}</a>
+      {%if page_obj.has_next %} 
+      <a style="text-decoration:none; color: white; background-color: dodgerblue; border-color: dodgerblue" href="?page={{page_obj.next_page_number}}" class="pagination-next">Next page</a> {# link to the next page #}
+      {% endif %}
+   </center>
 </div>
-
-
-
-
 <div class="column is-one-third">
-    <center>
-    <div class="block">
-        <div class="col-lg-4 col-md-4 col-12">
+   <center>
+      <div class="block">
+         <div class="col-lg-4 col-md-4 col-12">
             <div class="profile-image float-md-right" style="position: relative">
-                
-            <a style="text-decoration: none"href="{% url 'profile' request.user.id %}"><img src="{{request.user.profile_image}}" alt="">
-                
-                <h1 style="font-size: 20px">{{request.user.first_name}} {{request.user.last_name}}</h1>
-            </a> 
-        </div>
-        </div>
-
-    </div>
-</center>
-
-   
-
-    <div class="block">
-        <a href="{% url 'profile_list' %}" style="text-decoration:none">
-            <button class="button is-dark is-outlined is-fullwidth">
-                All Profiles
-            </button>
-        </a>
-    </div>
-    
-
-    <div class="block">
-        <form class="form-inline" method="GET" action="{% url 'search bar' %}">
-            
-            <input class="form-control mr-sm-2" name="q" type="text" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
-          </form>
-        </div>
-
-   
-
-    <div class="block">
-        <h2 class="title is-2">Add a State</p>
-    </div>
-
-    <form method="post">
-        {% csrf_token %}
-        {{form|crispy}}
-        <button class="button is-info is-fullwidth is-medium mt-5"
-        type="submit">State
-        </button>
-    </form>    
-
+               <a style="text-decoration: none"href="{% url 'profile' request.user.id %}">
+                  <img src="{{request.user.profile_image}}" alt="">
+                  <h1 style="font-size: 20px">{{request.user.first_name}} {{request.user.last_name}}</h1>
+               </a>
+            </div>
+         </div>
+      </div>
+   </center>
+   <div class="block">
+      <a href="{% url 'profile_list' %}" style="text-decoration:none">
+      <button class="button is-dark is-outlined is-fullwidth">
+      All Profiles
+      </button>
+      </a>
+   </div>
+   <div class="block">
+      <form class="form-inline" method="GET" action="{% url 'search bar' %}">
+         <input class="form-control mr-sm-2" name="q" type="text" placeholder="Search" aria-label="Search">
+         <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+      </form>
+   </div>
+   <div class="block">
+      <h2 class="title is-2">
+      Add a State</p>
+   </div>
+   <form method="post">
+      {% csrf_token %}
+      {{form|crispy}}
+      <button class="button is-info is-fullwidth is-medium mt-5"
+         type="submit">State
+      </button>
+   </form>
 </div>
-
-
 {% endblock content %}
-
-

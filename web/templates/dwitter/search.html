@@ -1,87 +1,71 @@
 {% extends 'base.html' %}
 {% load static %}
-
 {% block title %}
-    <title>Search results for "{{q}}"</title>
+<title>Search results for "{{q}}"</title>
 {% endblock title %}
-
-
-
 {% block content %}
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <link href="{% static 'css/search.css' %}" rel="stylesheet">
-
-
-        
-    
-    <div class="column">
-        {% if object_list %}
-        <h1>Search results for "{{q}}"
-        <div class="container profile-page">
-            <div class="row">
-              {% for profile in object_list %}
-                <div class="col-xl-6 col-lg-7 col-md-12">
-                    <div class="card profile-header">
-                        <div class="body">
-                            <div class="row">
-                                <div class="col-lg-4 col-md-4 col-12">
-                                    <div class="profile-image float-md-right"> <img src="{{profile.profile_image}}" alt=""> </div>
-                                </div>
-                                <div class="col-lg-8 col-md-8 col-12">
-                                    <h4 class="m-t-0 m-b-0"><a href="{% url 'profile' profile.id %}" style="text-decoration:none"><strong>{{profile.first_name}}</strong> {{profile.last_name}}</a></h4>
-                                    <span class="job_post"><i class="fa fa-user"></i> {{profile.profile.followed_by.all|length}} follower(s) </span>
-                                    {% if profile.bio %}
-                                      <p>{{profile.bio}}</p>
-                                    {% endif %}
-                                    
-                                    <p class="social-icon m-t-5 m-b-0">
-                                        <a title="Twitter" href="javascript:void(0);"><i class="fa fa-twitter"></i></a>
-                                        <a title="Facebook" href="javascript:void(0);"><i class="fa fa-facebook"></i></a>
-                                        <a title="Google-plus" href="javascript:void(0);"><i class="fa fa-twitter"></i></a>
-                                        <a title="Behance" href="javascript:void(0);"><i class="fa fa-behance"></i></a>
-                                        <a title="Instagram" href="javascript:void(0);"><i class="fa fa-instagram "></i></a>
-                                    </p>
-                                </div>                
-                            </div>
-                        </div>                    
-                    </div>
-                </div>
-              {% endfor %}
-        {% else %}
-        <h1>No results for "{{q}}". Try again.
-                
-              
-        {% endif %}
+<div class="column">
+   {% if object_list %}
+   <h1>
+   Search results for "{{q}}"
+   <div class="container profile-page">
+      <div class="row">
+         {% for profile in object_list %}
+         <div class="col-xl-6 col-lg-7 col-md-12">
+            <div class="card profile-header">
+               <div class="body">
+                  <div class="row">
+                     <div class="col-lg-4 col-md-4 col-12">
+                        <div class="profile-image float-md-right"> <img src="{{profile.profile_image}}" alt=""> </div>
+                     </div>
+                     <div class="col-lg-8 col-md-8 col-12">
+                        <h4 class="m-t-0 m-b-0"><a href="{% url 'profile' profile.id %}" style="text-decoration:none"><strong>{{profile.first_name}}</strong> {{profile.last_name}}</a></h4>
+                        <span class="job_post"><i class="fa fa-user"></i> {{profile.profile.followed_by.all|length}} follower(s) </span>
+                        {% if profile.bio %}
+                        <p>{{profile.bio}}</p>
+                        {% endif %}
+                        <p class="social-icon m-t-5 m-b-0">
+                           <a title="Twitter" href="javascript:void(0);"><i class="fa fa-twitter"></i></a>
+                           <a title="Facebook" href="javascript:void(0);"><i class="fa fa-facebook"></i></a>
+                           <a title="Google-plus" href="javascript:void(0);"><i class="fa fa-twitter"></i></a>
+                           <a title="Behance" href="javascript:void(0);"><i class="fa fa-behance"></i></a>
+                           <a title="Instagram" href="javascript:void(0);"><i class="fa fa-instagram "></i></a>
+                        </p>
+                     </div>
+                  </div>
+               </div>
             </div>
-        </div>
+         </div>
+         {% endfor %}
+         {% else %}
+         <h1>
+         No results for "{{q}}". Try again.
+         {% endif %}
       </div>
-
-
-    <div class="column is-one-third">
-        <div class="block">
-        <form class="form-inline" method="GET" action="{% url 'search bar' %}">
-            
-            <input class="form-control mr-sm-2" name="q" type="text" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
-          </form>
-        </div>
-    
-        <div class="block">
-            <a href="{% url 'profile_list' %}" style="text-decoration:none">
-                <button class="button is-dark is-outlined is-fullwidth">
-                    All Profiles
-                </button>
-            </a>
-        </div>
-        
-        <div class="block">
-            <a href="{% url 'profile' request.user.profile.id %}" style="text-decoration:none">
-                <button class="button is-info is-light is-outlined is-fullwidth">
-                    My Profile
-                </button>
-            </a>
-        </div>
-
-
+   </div>
+</div>
+<div class="column is-one-third">
+   <div class="block">
+      <form class="form-inline" method="GET" action="{% url 'search bar' %}">
+         <input class="form-control mr-sm-2" name="q" type="text" placeholder="Search" aria-label="Search">
+         <button class="btn btn-outline-info my-2 my-sm-0" type="submit">Search</button>
+      </form>
+   </div>
+   <div class="block">
+      <a href="{% url 'profile_list' %}" style="text-decoration:none">
+      <button class="button is-dark is-outlined is-fullwidth">
+      All Profiles
+      </button>
+      </a>
+   </div>
+   <div class="block">
+      <a href="{% url 'profile' request.user.profile.id %}" style="text-decoration:none">
+      <button class="button is-info is-light is-outlined is-fullwidth">
+      My Profile
+      </button>
+      </a>
+   </div>
 </div>
 {% endblock %}

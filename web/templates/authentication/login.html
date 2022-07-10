@@ -1,29 +1,23 @@
 {% extends 'base.html' %}
 {% load static %}
 {% load crispy_forms_tags %}
-
-
-
 {% block content %}
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 <link href="{% static 'css/login.css' %}" rel="stylesheet">
 <div class="container bootstrap snippets bootdey">
-    <div class="lc-block col-md-4 col-md-offset-4 toggled" id="l-login">
-        <div class="lcb-float"><i class="fa fa-users"></i></div>
-        <form class="my-form" action="" method="POST">
-        
-            {% csrf_token %}
-            
-        {{form|crispy}}
-        <div class="clearfix"></div>
-            <input type="submit" value="Login"  class="btn btn-primary btn-float m-t-25">
-            <a href="{% url 'signup' %}">New here? Sign up.</a>
-        <ul class="login-navigation">
+   <div class="lc-block col-md-4 col-md-offset-4 toggled" id="l-login">
+      <div class="lcb-float"><i class="fa fa-users"></i></div>
+      <form class="my-form" action="" method="POST">
+         {% csrf_token %}
+         {{form|crispy}}
+         <div class="clearfix"></div>
+         <input type="submit" value="Login"  class="btn btn-primary btn-float m-t-25">
+         <a href="{% url 'signup' %}">New here? Sign up.</a>
+         <ul class="login-navigation">
             <li data-block="#l-register" class="bg-green">Register</li>
             <li data-block="#l-forget-password" class="bg-orange">Forgot Password?</li>
-        </ul>
-    </form>
-    </div>
+         </ul>
+      </form>
+   </div>
 </div>
-
 {% endblock %}
