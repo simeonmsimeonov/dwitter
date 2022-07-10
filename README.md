@@ -5,9 +5,9 @@ Users have full CRUD functionalities over their content and profile. Built with 
 Overview of the main pages in the
 app:
 
-![signup](https://user-images.githubusercontent.com/65036762/178155577-40563dec-93bd-46c0-8422-a63774c014d5.gif)
-
 1) Sign-up page
+![signup (2)](https://user-images.githubusercontent.com/65036762/178155920-eb129bb4-cae9-4a96-8e12-3073eba00d7d.gif)
+
 ![signup](https://user-images.githubusercontent.com/65036762/178137208-4266382d-ab0d-4ed4-9e20-cc485a7997fb.jpg)
 2) Explore page of registered profiles.
 ![profiles](https://user-images.githubusercontent.com/65036762/178137213-0510cf2c-7691-40b9-9044-8ec2a458f7ac.jpg)
