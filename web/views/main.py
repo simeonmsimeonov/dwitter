@@ -28,16 +28,16 @@ def dashboard(request):
         page_obj = p.page(1)
     except EmptyPage:
         page_obj = p.page(p.num_pages)
-    return render(request, "dwitter/dashboard.html", {"form": form, "dweets": followed_states, "page_obj": page_obj})
+    return render(request, "statter/dashboard.html", {"form": form, "dweets": followed_states, "page_obj": page_obj})
 
 def profile_list(request):
     profiles = Profile.objects.all()
-    return render(request, "dwitter/profile_list.html", {"profiles": profiles})
+    return render(request, "statter/profile_list.html", {"profiles": profiles})
 
 
 class SearchView(views.ListView):
     model = User
-    template_name = "dwitter/search.html"
+    template_name = "statter/search.html"
 
     def get_queryset(self):
         query = self.request.GET.get("q")

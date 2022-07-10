@@ -4,7 +4,6 @@ from web.forms import ProfileEditForm
 from web.models import Profile, Dweet, User
 from django.views import generic as views
 from django.contrib.auth import mixins as auth_mixins
-from django.db.models import Q
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
@@ -12,15 +11,20 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def profile_list(request):
     profiles = Profile.objects.all()
-    return render(request, "dwitter/profile_list.html", {"profiles": profiles})
+    p = Paginator(profiles, 6)
+    page_number = request.GET.get('page')
+    try:
+        page_obj = p.get_page(page_number)
+    except PageNotAnInteger:
+        page_obj = p.page(1)
+    except EmptyPage:
+        page_obj = p.page(p.num_pages)
+    return render(request, "statter/profile_list.html", {"profiles": profiles, "page_obj": page_obj})
 
 def profile(request, pk):
-    # if not hasattr(request.user, 'profile'):
-    #     missing_profile = Profile(user=request.user)
-    #     missing_profile.save()
-
+    user = User.objects.get(pk=request.user.id)
     profile = Profile.objects.get(pk=pk)
-    states = Dweet.objects.filter(user__id=profile.user.id).order_by("-created_at")
+    states = Dweet.objects.filter(user__id=profile.id).order_by("-created_at")
     first_followers = Profile.objects.filter(user__profile__in=profile.followed_by.all()[:3])
     followers_left = Profile.objects.filter(user__profile__in=profile.followed_by.all()[3:])
     p = Paginator(states, 5)
@@ -45,14 +49,22 @@ def profile(request, pk):
         elif action == "unfollow":
             current_user_profile.follows.remove(profile)
         current_user_profile.save()
-    return render(request, "dwitter/profile.html", {"profile": profile, "page_obj": page_obj, "first_followers": first_followers, "followers_left": followers_left, 
-    "states": states})
+
+    return render(
+        request, "statter/profile.html", 
+        {"profile": profile, 
+        "page_obj": page_obj, 
+        "first_followers": first_followers, 
+        "followers_left": followers_left, 
+        "states": states, 
+        "user": user}
+    )
 
 
 
 class ProfileEditView(views.UpdateView, auth_mixins.PermissionRequiredMixin):
     model = User
-    template_name = 'dwitter/profile_edit.html'
+    template_name = 'statter/profile_edit.html'
     form_class = ProfileEditForm
     
     def get_context_data(self, **kwargs):
@@ -76,7 +88,7 @@ class ProfileEditView(views.UpdateView, auth_mixins.PermissionRequiredMixin):
 class DeleteProfileView(views.DeleteView):
     model = User
     success_url = reverse_lazy("dashboard")
-    template_name = "dwitter/user_confirm_delete.html"
+    template_name = "statter/user_confirm_delete.html"
 
     def dispatch(self, request, pk, *args, **kwargs):
         current_user = User.objects.filter(pk=pk)

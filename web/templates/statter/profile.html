@@ -12,7 +12,8 @@
          {{profile.user.username|upper}}'s States
       </h1>
    </div>
-   {% if profile.user.dweets %}
+   {% if states %}
+   
    {% for dweet in states %}
    <div class="box">
       <ul class="activity-list list-unstyled;" style="list-style-type: none">
@@ -40,19 +41,22 @@
    </div>
    {% endfor %}
    {% else %}
-   <h1 class="title is-1">
-      You don't have any states. Write some.
-   </h1>
+   <h4 class="">
+      You don't have any states. 🤔 Write some. ✍️
+   </h4>
    {% endif %}
    {{dweets}}
+
    <center style="text-decoration:none">
+     {% if page_obj.count > 5 %}
       {%if page_obj.has_previous %} 
-      <a style="text-decoration:none; color: white; background-color: dodgerblue; border-color: dodgerblue" href="?page={{page_obj.previous_page_number}}" class="pagination-next">Previous</a> {# link to the prev page #}
+      <a style="text-decoration:none; color: white; background-color: dodgerblue; border-color: dodgerblue;" href="?page={{page_obj.previous_page_number}}" class="pagination-next">Previous</a> 
       {% endif %}
-      <a style="text-decoration:none; color: white; background-color: dodgerblue; border-color: dodgerblue; position: static;" class="pagination-link is-current" aria-label="Page 46" aria-current="page">{{page_obj.number}}</a>
+      <a style="text-decoration:none; color: dodgerblue; background-color: white; border-color: dodgerblue" class="pagination-link is-current" aria-label="Page 46" aria-current="page">{{page_obj.number}}</a>
       {%if page_obj.has_next %} 
-      <a style="text-decoration:none; color: white; background-color: dodgerblue; border-color: dodgerblue; postion: static" href="?page={{page_obj.next_page_number}}" class="pagination-next">Next page</a> {# link to the next page #}
+      <a style="text-decoration:none; color: white; background-color: dodgerblue; border-color: dodgerblue" href="?page={{page_obj.next_page_number}}" class="pagination-next">Next page</a> 
       {% endif %}
+   {% endif %}
    </center>
 </div>
 <div class="column is-one-third">

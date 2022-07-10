@@ -1,16 +1,15 @@
-from multiprocessing.dummy import current_process
 from django.urls import reverse_lazy
-from web.models import Dweet, Profile, User
+from web.models import Dweet
 from django.views.generic.edit import DeleteView
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect
 
 
 class StateDeleteView(DeleteView):
     model = Dweet
     success_url = reverse_lazy("dashboard")
-    template_name = "dwitter/dweet_confirm_delete.html"
+    template_name = "statter/dweet_confirm_delete.html"
 
-    def dispatch(self, request, pk, *args, **kwargs):
+    def dispatch(self, request, pk):
         if not request.user.is_authenticated:
             return redirect('login')
         

@@ -9,7 +9,7 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from web.managers import UserManager
 from django.utils.text import slugify
-from django.core.validators import MinLengthValidator,MaxLengthValidator, MinValueValidator
+from django.core.validators import MinLengthValidator,MaxLengthValidator
 
 from web.validators import only_letters_and_numbers_validator, only_letters_validator
 
