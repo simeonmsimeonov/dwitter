@@ -77,7 +77,7 @@
                   <a href="{% url 'profile edit' profile.user.id %}" style="text-decoration: none"><button class="button is-warning"><i class='fa fa-edit'></i><strong>Edit</strong></button></a>
                   {% endif %}
                   <div class="block">
-                     {% if request.user.id != profile.user.id %}
+                     {% if request.user.id != profile.user.id  %}
                      <form method="post">
                         {% csrf_token %}
                         <div class="buttons has-addons">

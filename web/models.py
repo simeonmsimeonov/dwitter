@@ -9,8 +9,11 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from web.managers import UserManager
 from django.utils.text import slugify
+from django.core.validators import MinLengthValidator,MaxLengthValidator, MinValueValidator
 
+from web.validators import only_letters_and_numbers_validator, only_letters_validator
 
+DEFAULT_PROFILE_IMG = "http://cdn.onlinewebfonts.com/svg/img_191958.png"
 
 
 
@@ -20,11 +23,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
     # password field supplied by AbstractBaseUser
     # last_login field supplied by AbstractBaseUser
-    username = models.CharField(_('username'), max_length=20, unique=True)
-    first_name = models.CharField(_('first name'), max_length=30, blank=True)
-    last_name = models.CharField(_('last name'), max_length=150, blank=True)
-    bio = models.CharField(max_length=100, blank=True, null=True)
-    profile_image = models.URLField(blank=True, null=True, default="http://cdn.onlinewebfonts.com/svg/img_191958.png")
+    username = models.CharField(_('username'), max_length=20, unique=True, validators=(MinLengthValidator(3), MaxLengthValidator(30), only_letters_and_numbers_validator))
+    first_name = models.CharField(_('first name'), max_length=30, blank=True, validators=(MinLengthValidator(3), MaxLengthValidator(30), only_letters_validator))
+    last_name = models.CharField(_('last name'), max_length=150, blank=True, validators=(MinLengthValidator(3), MaxLengthValidator(30), only_letters_validator))
+    bio = models.CharField(max_length=100, blank=True, null=True, validators=(MinLengthValidator(5), MaxLengthValidator(400)))
+    profile_image = models.URLField(blank=True, null=True, default=DEFAULT_PROFILE_IMG)
     slug = models.SlugField(max_length=20, unique=True, null=True, blank=True)
     
 
@@ -111,7 +114,7 @@ class Tag(models.Model):
 
 class Dweet(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="dweets", on_delete=models.SET_NULL, null=True)
-    body = models.CharField(max_length=140)
+    body = models.CharField(max_length=300)
     created_at = models.DateTimeField(auto_now_add=True)
     tag = models.ForeignKey(Tag, related_name="tags", on_delete=models.SET_NULL, null=True, blank=True)
 

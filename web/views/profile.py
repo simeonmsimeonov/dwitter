@@ -15,9 +15,9 @@ def profile_list(request):
     return render(request, "dwitter/profile_list.html", {"profiles": profiles})
 
 def profile(request, pk):
-    if not hasattr(request.user, 'profile'):
-        missing_profile = Profile(user=request.user)
-        missing_profile.save()
+    # if not hasattr(request.user, 'profile'):
+    #     missing_profile = Profile(user=request.user)
+    #     missing_profile.save()
 
     profile = Profile.objects.get(pk=pk)
     states = Dweet.objects.filter(user__id=profile.user.id).order_by("-created_at")
@@ -33,6 +33,9 @@ def profile(request, pk):
         page_obj = p.page(p.num_pages)
     
     if request.method == "POST":
+        if not request.user.is_authenticated:
+            return redirect('login')
+        
         current_user_profile = request.user.profile
         data = request.POST
         action = data.get("follow")
@@ -46,6 +49,7 @@ def profile(request, pk):
     "states": states})
 
 
+
 class ProfileEditView(views.UpdateView, auth_mixins.PermissionRequiredMixin):
     model = User
     template_name = 'dwitter/profile_edit.html'
@@ -57,12 +61,12 @@ class ProfileEditView(views.UpdateView, auth_mixins.PermissionRequiredMixin):
         context['profile'] = profile_object[0]
         return context
     
-    # def dispatch(self, request, pk, *args, **kwargs):
-    #     current_user = User.objects.filter(pk=pk)
-    #     if not request.user.is_authenticated:
-    #         return redirect('login')
-    #     elif not current_user[0].id == self.request.user.id:
-    #         return redirect('dashboard')
+    def dispatch(self, request, pk):
+        current_user = User.objects.filter(pk=pk)
+        if not request.user.is_authenticated:
+            return redirect('login')
+        elif not current_user[0].id == self.request.user.id:
+            return redirect('dashboard')
         
     def get_success_url(self):
         profile = self.get_object()
