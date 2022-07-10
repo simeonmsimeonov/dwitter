@@ -30,11 +30,10 @@ class UserLoginView(auth_views.LoginView):
    template_name = 'authentication/login.html'
    success_url = reverse_lazy('dashboard')
 
-
    def dispatch(self, request, *args, **kwargs):
-            if request.user.is_authenticated:
-                return redirect('dashboard')
-            return super().dispatch(request, *args, **kwargs)
+        if request.user.is_authenticated:
+            return redirect('dashboard')
+        return super().dispatch(request, *args, **kwargs)
 
 
 class UserLogoutView(auth_views.LogoutView):

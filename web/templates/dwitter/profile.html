@@ -13,7 +13,7 @@
       </h1>
    </div>
    {% if profile.user.dweets %}
-   {% for dweet in page_obj.object_list%}
+   {% for dweet in states %}
    <div class="box">
       <ul class="activity-list list-unstyled;" style="list-style-type: none">
          <li class="clearfix">
@@ -126,18 +126,18 @@
             {% endif %}
             <h4 class="font-medium text-center mt-4">Followers</h4>
             <ul class="list-style-none list-icons d-flex flex-item text-center pt-2">
-               {% for following in follower_people %}
+               {% for following in first_followers %}
                <li class="col px-2">
                   <a href="{% url 'profile' following.id %}" data-toggle="tooltip" title="" data-original-title="{{profile.user.first_name}}">
                   <img src="{{following.user.profile_image}}" alt="user" class="rounded-circle" width="50" />
                   </a>
                </li>
                {% endfor %}
-               {% if all_followers|length > 1%}
+               {% if left_followers|length > 1%}
                <li class="col px-2">
                   <a href="javascript:void(0)" data-toggle="tooltip" title="" data-original-title="More">
                   <button class="btn btn-circle btn-info text-white btn-lg" href="javascript:void(0)">
-                  +{{all_followers|length}}
+                  +{{left_followers|length}}
                   </button>
                   </a>
                </li>

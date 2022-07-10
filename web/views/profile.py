@@ -14,17 +14,16 @@ def profile_list(request):
     profiles = Profile.objects.all()
     return render(request, "dwitter/profile_list.html", {"profiles": profiles})
 
-
 def profile(request, pk):
     if not hasattr(request.user, 'profile'):
         missing_profile = Profile(user=request.user)
         missing_profile.save()
 
     profile = Profile.objects.get(pk=pk)
-    dweets = Dweet.objects.filter(user__id=profile.user.id).order_by("-created_at")
+    states = Dweet.objects.filter(user__id=profile.user.id).order_by("-created_at")
     first_followers = Profile.objects.filter(user__profile__in=profile.followed_by.all()[:3])
     followers_left = Profile.objects.filter(user__profile__in=profile.followed_by.all()[3:])
-    p = Paginator(dweets, 5)
+    p = Paginator(states, 5)
     page_number = request.GET.get('page')
     try:
         page_obj = p.get_page(page_number)
@@ -43,7 +42,8 @@ def profile(request, pk):
         elif action == "unfollow":
             current_user_profile.follows.remove(profile)
         current_user_profile.save()
-    return render(request, "dwitter/profile.html", {"profile": profile, "page_obj": page_obj, "first_followers": first_followers, "followers_left": followers_left})
+    return render(request, "dwitter/profile.html", {"profile": profile, "page_obj": page_obj, "first_followers": first_followers, "followers_left": followers_left, 
+    "states": states})
 
 
 class ProfileEditView(views.UpdateView, auth_mixins.PermissionRequiredMixin):
@@ -57,12 +57,12 @@ class ProfileEditView(views.UpdateView, auth_mixins.PermissionRequiredMixin):
         context['profile'] = profile_object[0]
         return context
     
-    def dispatch(self, request, pk, *args, **kwargs):
-        current_user = User.objects.filter(pk=pk)
-        if not request.user.is_authenticated:
-            return redirect('login')
-        elif not current_user[0].id == self.request.user.id:
-            return redirect('dashboard')
+    # def dispatch(self, request, pk, *args, **kwargs):
+    #     current_user = User.objects.filter(pk=pk)
+    #     if not request.user.is_authenticated:
+    #         return redirect('login')
+    #     elif not current_user[0].id == self.request.user.id:
+    #         return redirect('dashboard')
         
     def get_success_url(self):
         profile = self.get_object()

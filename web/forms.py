@@ -24,7 +24,6 @@ class RegistrationForm(forms.ModelForm):
         required=True
     )
 
-
     class Meta:
         model = User
         fields = ["email", "username", "password", "first_name", "last_name"]

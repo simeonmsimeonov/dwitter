@@ -53,7 +53,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'dwitter.urls'
+ROOT_URLCONF = 'statter.urls'
 
 TEMPLATES = [
     {
@@ -71,7 +71,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'dwitter.wsgi.application'
+WSGI_APPLICATION = 'statter.wsgi.application'
 
 
 # Database

@@ -5,8 +5,6 @@ from web.views.profile import DeleteProfileView, ProfileEditView, profile, profi
 from web.views.state import DweetDeleteView
 
 
-
-
 urlpatterns = [
     path("", dashboard, name="dashboard"),
     path("profile_list/", profile_list, name="profile_list"),
