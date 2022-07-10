@@ -2,7 +2,10 @@
 A small social network where people can connect and share text-based posts.
 Users have full CRUD functionalities over their content and profile. Built with Django as well as Bulma & Bootstrap CSS frameworks.
 
-Overview of the main pages in the app:
+Overview of the main pages in the
+app:
+
+![signup](https://user-images.githubusercontent.com/65036762/178155577-40563dec-93bd-46c0-8422-a63774c014d5.gif)
 
 1) Sign-up page
 ![signup](https://user-images.githubusercontent.com/65036762/178137208-4266382d-ab0d-4ed4-9e20-cc485a7997fb.jpg)
